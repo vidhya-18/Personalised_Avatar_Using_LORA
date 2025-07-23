@@ -31,7 +31,6 @@ def load_pipeline():
 
     st.write("🔁 Loading LoRA weights...")
     pipe.load_lora_weights("vidhyavarshu/avatar-generator-weights", weight_name="lora_weights.safetensors")
-    pipe.load_lora_weights("vidhyavarshu/avatar-generator-weights", weight_name="lora_weights.text_encoder.safetensors")
 
     st.write("✅ Pipeline loaded successfully.")
     return pipe
