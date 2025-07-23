@@ -51,7 +51,7 @@ GUIDANCE = 7.5  # Fixed for optimal results
 if st.button("Generate Avatar") and prompt:
     with st.spinner("Generating avatar..."):
         pipe = load_pipeline()
-        image = pipe(prompt, num_inference_steps=25, guidance_scale=GUIDANCE).images[0]
+        image = pipe(prompt, num_inference_steps=15, guidance_scale=GUIDANCE).images[0]
         output_path = "generated_avatar.png"
         image.save(output_path)
         st.image(image, caption="🎨 Generated Avatar")
