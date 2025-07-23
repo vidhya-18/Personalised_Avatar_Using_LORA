@@ -5,6 +5,13 @@ import torch
 from PIL import Image
 import os
 
+import os
+from huggingface_hub import login
+
+hf_token = os.getenv("HF_TOKEN")
+if hf_token:
+    login(token=hf_token)
+
 from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 # Paths
 UNET_PATH = "lora_weights.safetensors"
@@ -16,15 +23,13 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 @st.cache_resource
 def load_pipeline():
     pipe = StableDiffusionPipeline.from_pretrained(
-    "runwayml/stable-diffusion-v1-5",
+    MODEL_NAME,
     torch_dtype=torch.float16,
-    scheduler=DPMSolverMultistepScheduler.from_pretrained("runwayml/stable-diffusion-v1-5", subfolder="scheduler")
+    scheduler=DPMSolverMultistepScheduler.from_pretrained(MODEL_NAME, subfolder="scheduler")
 ).to("cuda" if torch.cuda.is_available() else "cpu")
 
-    if os.path.exists(UNET_PATH):
-     pipe.load_lora_weights(".", weight_name="lora_weights.safetensors")
-    if os.path.exists(TEXT_ENCODER_PATH):
-     pipe.load_lora_weights(".", weight_name="lora_weights.text_encoder.safetensors")
+    pipe.load_lora_weights("vidhyavarshu/avatar-generator-weights", weight_name="lora_weights.safetensors")
+    pipe.load_lora_weights("vidhyavarshu/avatar-generator-weights", weight_name="lora_weights.text_encoder.safetensors")
 
     return pipe
 
@@ -45,7 +50,7 @@ if st.button("Generate Avatar") and prompt:
     with st.spinner("Generating avatar..."):
         pipe = load_pipeline()
         image = pipe(prompt, num_inference_steps=30, guidance_scale=GUIDANCE).images[0]
-        image.save("/content/generated_avatar.png")
+        image.save("generated_avatar.png")
         st.image(image, caption="🎨 Generated Avatar")
-        with open("/content/generated_avatar.png", "rb") as f:
+        with open(image_path, "rb") as f:
             st.download_button("📥 Download Avatar", f, "avatar.png", "image/png")
