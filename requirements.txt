@@ -2,7 +2,7 @@ streamlit
 torch
 transformers
 diffusers
-bitsandbytes
 safetensors
 Pillow
-pyngrok
+accelerate
+
