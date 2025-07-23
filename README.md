@@ -1,85 +1,68 @@
-🧙‍♀️ AvatarCrafter – Personalized AI Avatar Generator
-📌 Overview
-AvatarCrafter is a Streamlit-based AI application that allows users to generate personalized avatars by combining a reference prompt with fine-tuned LoRA weights over the Stable Diffusion v1.5 model.
+# 🎨 AvatarCrafter – Personalized AI Avatar Generator
 
-🖼️ Upload an image (optional for future enhancement)
+## 📌 Overview
+**AvatarCrafter** is a Streamlit-based AI application that allows users to generate personalized avatars by combining a reference prompt with fine-tuned **LoRA weights** on top of the **Stable Diffusion v1.5** model.
 
-📝 Enter a prompt like “a photo of KTN wearing a space suit”
+---
 
-🪄 Generate stunning AI avatars in seconds
+## ⚙️ Features
 
-☁️ Weights hosted via Hugging Face (vidhyavarshu/avatar-generator-weights)
+- 🧠 **LoRA weights support** (lightweight fine-tuning over Stable Diffusion)
+- ⚡ **Fast inference** using `Diffusers` + `DPMSolverMultistepScheduler`
+- 🚀 **GPU acceleration** via `torch.cuda`
+- 🔐 **Hugging Face Hub token** integration
+- 🔁 **Modular code** with caching for efficient usage
+- 🎛️ **Prompt-based avatar customization**
+- 📥 **Download button** to save generated avatars
+- 🖼️ *(Optional)* Image upload for future enhancement
 
-🔧 Model loaded in Colab, deployed using Streamlit
+---
 
-🚀 Features
-🔄 LoRA weights support (compressed fine-tuning over base SD model)
+## 🛠️ Tech Stack
 
-🖥️ GPU acceleration via torch.cuda
+- 🧩 [Stable Diffusion v1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5)
+- 🪄 LoRA fine-tuning
+- 📦 [Hugging Face Hub](https://huggingface.co/vidhyavarshu/avatar-generator-weights)
+- 🔗 `diffusers`, `transformers`, `safetensors`
+- 📊 Streamlit for interactive frontend
+- ☁️ Colab for deployment and notebook execution
 
-🌐 Hugging Face Hub token integration
+---
 
-🧠 Diffusers pipeline + DPMSolverMultistepScheduler for fast inference
+## 🚶‍♀️ How to Use
 
-🧱 Modular code with caching for efficient resource usage
+This project uses **two Google Colab notebooks** to simplify setup and execution.
 
-📥 Avatar download button after generation
+### 1️⃣ Upload LoRA Weights to Hugging Face
 
+📓 Notebook: [LoRA Weights Upload](https://colab.research.google.com/drive/1BBSEhp_DChyPXtqADEecFSF7vRjVUpUy)
 
-🧪 How to Run the Colab Notebooks
-Your project uses two Colab notebooks:
+#### Steps:
+1. Open the Colab notebook.
+2. Click `Runtime > Run all`.
+3. Enter your **Hugging Face token** when prompted.
+4. The notebook uploads:
+   - `lora_weights.safetensors` (U-Net)
+   - *(Optional)* `lora_weights.text_encoder.safetensors`
 
-📦 LoRA Weights Upload Notebook
+Weights will be saved in your Hugging Face repo:  
+➡️ `vidhyavarshu/avatar-generator-weights`
 
-🎨 Avatar Generator with Streamlit
+---
 
-✅ Step-by-Step Instructions
-🔹 STEP 1: Upload LoRA Weights to Hugging Face
-📓 Notebook: LoRA Weights Upload
+### 2️⃣ Run the Avatar Generator (Streamlit)
 
-▶️ What it does:
-Uploads your fine-tuned .safetensors files to the Hugging Face Hub under your model repo:
-vidhyavarshu/avatar-generator-weights
+📓 Notebook: [Avatar Generator with Streamlit](https://colab.research.google.com/drive/1sewMBrkAmLzR2RKIcLEkZYJ0Nu-ox6TV?usp=sharing)
 
-🛠️ How to run:
-Open the notebook
+#### Steps:
+1. Open the Colab notebook.
+2. Click `Runtime > Run all`.
+3. Paste your Hugging Face token when asked.
+4. A **public Streamlit URL** will appear. Click to launch the app.
 
-Click Runtime > Run all
-
-When prompted, paste your Hugging Face token
-
-You can get it from: https://huggingface.co/settings/tokens
-
-This will upload:
-
-lora_weights.safetensors (for U-Net)
-
-(Optional) lora_weights.text_encoder.safetensors (if available)
-
-🔹 STEP 2: Generate Avatars using Streamlit + LoRA
-📓 Notebook: Avatar Generator with Streamlit
-
-▶️ What it does:
-Launches a Streamlit UI, loads LoRA weights from Hugging Face, and generates avatars from text prompts.
-
-🛠️ How to run:
-Open the notebook
-
-Click Runtime > Run all
-
-When prompted, enter your Hugging Face token
-
-After all cells run, at the bottom you will see a public Streamlit URL like:
-
-Running on public URL: https://<random-id>-<colab-name>.streamlit.app
-Click the URL to open the app in a new tab
-
-In the app:
-Enter a text prompt like:
-a photo of ktn in a pilot uniform
-
-Click Generate Avatar
-
-Wait for image generation (~20–30 sec)
-
-Click Download Avatar to save the image
+#### In the Streamlit App:
+- Enter a prompt like:  
+  `"a photo of KTN in a pilot uniform"`
+- Click **Generate Avatar**
+- Wait for the image to render
+- Click **Download Avatar** to save it
