@@ -6,9 +6,8 @@ from PIL import Image
 import os
 from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 # Paths
-UNET_PATH = "/content/lora_weights.safetensors"
-TEXT_ENCODER_PATH = "/content/lora_weights.text_encoder.safetensors"
-
+UNET_PATH = "lora_weights.safetensors"
+TEXT_ENCODER_PATH = "lora_weights.text_encoder.safetensors"
 MODEL_NAME = "runwayml/stable-diffusion-v1-5"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -22,10 +21,9 @@ def load_pipeline():
 ).to("cuda" if torch.cuda.is_available() else "cpu")
 
     if os.path.exists(UNET_PATH):
-     pipe.load_lora_weights("/content", weight_name="lora_weights.safetensors")
+     pipe.load_lora_weights(".", weight_name="lora_weights.safetensors")
     if os.path.exists(TEXT_ENCODER_PATH):
-     pipe.load_lora_weights("/content", weight_name="lora_weights.text_encoder.safetensors")
-
+     pipe.load_lora_weights(".", weight_name="lora_weights.text_encoder.safetensors")
 
     return pipe
 
