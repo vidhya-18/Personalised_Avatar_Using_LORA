@@ -12,7 +12,7 @@ hf_token = os.getenv("HF_TOKEN")
 if hf_token:
     login(token=hf_token)
 
-from diffusers import StableDiffusionPipeline, EulerAncestralDiscreteScheduler
+from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 # Paths
 UNET_PATH = "lora_weights.safetensors"
 TEXT_ENCODER_PATH = "lora_weights.text_encoder.safetensors"
@@ -26,13 +26,11 @@ def load_pipeline():
     pipe = StableDiffusionPipeline.from_pretrained(
         MODEL_NAME,
         torch_dtype=torch.float16 if DEVICE == "cuda" else torch.float32,
-        scheduler=EulerAncestralDiscreteScheduler.from_pretrained(MODEL_NAME, subfolder="scheduler")
+        scheduler=DPMSolverMultistepScheduler.from_pretrained(MODEL_NAME, subfolder="scheduler")
     ).to(DEVICE)
 
-    st.write("🔁 Loading LoRA weights...")
     pipe.load_lora_weights("vidhyavarshu/avatar-generator-weights", weight_name="lora_weights.safetensors")
-
-    st.write("✅ Pipeline loaded successfully.")
+    pipe.load_lora_weights("vidhyavarshu/avatar-generator-weights", weight_name="lora_weights.text_encoder.safetensors")
     return pipe
 
 # Streamlit UI
