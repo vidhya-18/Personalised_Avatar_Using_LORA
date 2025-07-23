@@ -4,7 +4,7 @@ from safetensors.torch import load_file
 import torch
 from PIL import Image
 import os
-
+from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 # Paths
 UNET_PATH = "/content/lora_weights.safetensors"
 TEXT_ENCODER_PATH = "/content/lora_weights.text_encoder.safetensors"
@@ -16,9 +16,10 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 @st.cache_resource
 def load_pipeline():
     pipe = StableDiffusionPipeline.from_pretrained(
-        MODEL_NAME,
-        torch_dtype=torch.float16 if DEVICE == "cuda" else torch.float32
-    ).to(DEVICE)
+    "runwayml/stable-diffusion-v1-5",
+    torch_dtype=torch.float16,
+    scheduler=DPMSolverMultistepScheduler.from_pretrained("runwayml/stable-diffusion-v1-5", subfolder="scheduler")
+).to("cuda" if torch.cuda.is_available() else "cpu")
 
     if os.path.exists(UNET_PATH):
      pipe.load_lora_weights("/content", weight_name="lora_weights.safetensors")
@@ -44,7 +45,7 @@ GUIDANCE = 7.5  # Fixed for optimal results
 if st.button("Generate Avatar") and prompt:
     with st.spinner("Generating avatar..."):
         pipe = load_pipeline()
-        image = pipe(prompt, num_inference_steps=50, guidance_scale=GUIDANCE).images[0]
+        image = pipe(prompt, num_inference_steps=30, guidance_scale=GUIDANCE).images[0]
         image.save("/content/generated_avatar.png")
         st.image(image, caption="🎨 Generated Avatar")
         with open("/content/generated_avatar.png", "rb") as f:
