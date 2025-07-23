@@ -22,15 +22,18 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # Load the model
 @st.cache_resource
 def load_pipeline():
+    st.write("⏳ Loading base model...")
     pipe = StableDiffusionPipeline.from_pretrained(
-    MODEL_NAME,
-    torch_dtype=torch.float16,
-    scheduler=DPMSolverMultistepScheduler.from_pretrained(MODEL_NAME, subfolder="scheduler")
-).to("cuda" if torch.cuda.is_available() else "cpu")
+        MODEL_NAME,
+        torch_dtype=torch.float16 if DEVICE == "cuda" else torch.float32,
+        scheduler=DPMSolverMultistepScheduler.from_pretrained(MODEL_NAME, subfolder="scheduler")
+    ).to(DEVICE)
 
+    st.write("🔁 Loading LoRA weights...")
     pipe.load_lora_weights("vidhyavarshu/avatar-generator-weights", weight_name="lora_weights.safetensors")
     pipe.load_lora_weights("vidhyavarshu/avatar-generator-weights", weight_name="lora_weights.text_encoder.safetensors")
 
+    st.write("✅ Pipeline loaded successfully.")
     return pipe
 
 # Streamlit UI
