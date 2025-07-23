@@ -1,4 +1,4 @@
-# 🎨 AvatarCrafter – Personalized AI Avatar Generator
+# 🧙‍♀️ AvatarCrafter – Personalized AI Avatar Generator
 
 ## 📌 Overview
 **AvatarCrafter** is a Streamlit-based AI application that allows users to generate personalized avatars by combining a reference prompt with fine-tuned **LoRA weights** on top of the **Stable Diffusion v1.5** model.
