@@ -52,7 +52,8 @@ if st.button("Generate Avatar") and prompt:
     with st.spinner("Generating avatar..."):
         pipe = load_pipeline()
         image = pipe(prompt, num_inference_steps=30, guidance_scale=GUIDANCE).images[0]
-        image.save("generated_avatar.png")
+        output_path = "generated_avatar.png"
+        image.save(output_path)
         st.image(image, caption="🎨 Generated Avatar")
-        with open(image_path, "rb") as f:
-            st.download_button("📥 Download Avatar", f, "avatar.png", "image/png")
+        with open(output_path, "rb") as f:
+         st.download_button("📥 Download Avatar", f, "avatar.png", "image/png")
